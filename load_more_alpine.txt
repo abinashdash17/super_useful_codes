@@ -1,0 +1,35 @@
+js fiddle
+alpine load more
+https://github.com/alpinejs/alpine/issues/327
+https://jsfiddle.net/6au1onme/1/
+/////
+<div class="comments-list" x-data="comments()" x-init="loadMore()">
+  <template x-for="item in list" :key="item">
+    <div class="comment">
+      <div><b x-text="item.name"></b></div>
+      <div x-text="item.body"></div>
+    </div>
+  </template>
+  <a href="#" @click.prevent="loadMore()">load more</a>
+</div>
+/////
+
+/////
+const BASE_URL = 'https://jsonplaceholder.typicode.com';
+
+function comments() {
+	return {
+  	list: [],
+    page: 1,
+    limit: 2,
+    loadMore() {
+      const url = `${BASE_URL}/posts/1/comments?_page=${this.page}&_limit=${this.limit}`;
+
+      $.get(url).then((response) => {
+        this.list = [...this.list, ...response];
+        this.page++;
+      })
+    }
+  }
+}
+/////
